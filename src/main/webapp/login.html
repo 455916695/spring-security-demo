@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--  /login  这个地址 是Spring security 默认提供的，必须的 post 提交  -->
+竟然敢登陆我的网站
+<form action="/login" method="post">
+    <!-- 如果没有专门的设置  两个 表单的name 只能是username password  -->
+    用户名：<input name="username"></br>
+    密 码：<input name="password"></br>
+    <input type="submit" value="登陆"/>
+</form>
+</body>
+</html>

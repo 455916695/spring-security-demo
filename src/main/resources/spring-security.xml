@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 这里的bean 不再是默认的命令空间了，  而是将 security 做为默认命名空间 -->
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <!-- 配置不登陆也可以访问的路面 -->
+    <http pattern="/login.html" security="none"></http>
+    <http pattern="/login-error.html" security="none"></http>
+
+    <!-- 页面拦截规则 use-expressions： 是否启用SPEL表达式，不配默认为true -->
+    <http use-expressions="false">
+        <!--     /* 只包含该目录的资源    /** 该目录及子目录   access="ROLE_任意"  -->
+        <!--    当前用户必须有ROLE_USER 的角色 ，才可以访问跟目录及所属子目录的资源 -->
+        <!--   若是没有配置use-expressions:   access就得这么配  access="hasRole('ROLE_USER')"   -->
+        <intercept-url pattern="/**" access="ROLE_USER"/>
+        <!--  开启表单登陆功能 ： 会自动为我们创建登陆页面 -->
+        <!-- login-page:配置登陆页面  default-target-url:配置登陆成功后的跳转页面  authentication-failure-url: 登陆失败跳转页面-->
+        <form-login login-page="/login.html" default-target-url="/index.html"
+                    authentication-failure-url="/login-error.html"/>
+
+        <!-- 配置 disabled:true 表示关闭  csrf 功能；  默认是disabled:false  是开启的 -->
+        <csrf disabled="true"/>
+    </http>
+
+    <!-- 认证管理器 -->
+    <authentication-manager>
+        <authentication-provider>
+            <user-service>
+                <!--  name:用户名称   password:密码    authorities:角色 （ROLE_任意）  -->
+                <user name="admin" password="123456" authorities="ROLE_USER"/>
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+</beans:beans>
